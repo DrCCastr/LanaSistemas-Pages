@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecionando...</title>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const site = params.get("site") || "default";
+    const theme = params.get("theme") || "light";
+
+    const siteMap = {
+        "oauth-done": "oauht-done/index.html",
+        "default": "ouath-done/index.html" // TODO: add default
+    };
+
+    const target = siteMap[site.toLowerCase()] || siteMap["default"];
+    const redirectUrl = `${target}?theme=${theme}`;
+
+    window.location.href = redirectUrl;
+  </script>
+</head>
+<body>
+  <p>Redirecionando...</p>
+</body>
+</html>
