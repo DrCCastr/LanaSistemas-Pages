@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Mensagem Discord</title>
+  <title>Verificação concluída</title>
   <style>
     body {
       margin: 0;
@@ -19,6 +19,18 @@
       padding: 2rem 3rem;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      max-width: 420px;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #5865F2;
+      color: white;
     }
 
     body[data-theme="light"] {
@@ -42,13 +54,52 @@
 </head>
 <body>
   <div class="container">
-    <h1>Você já pode fechar essa aba e voltar ao Discord</h1>
+    <h1 id="title">Processando…</h1>
+    <p id="desc">Aguarde um momento</p>
+    <button id="backBtn" style="display:none;">Voltar ao Discord</button>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const theme = params.get("theme") || "light";
+    const code = params.get("code");
+
     document.body.setAttribute("data-theme", theme.toLowerCase());
+
+    const title = document.getElementById("title");
+    const desc = document.getElementById("desc");
+    const backBtn = document.getElementById("backBtn");
+
+    async function copyAndReturn() {
+      if (!code) {
+        title.textContent = "❌ Código não encontrado";
+        desc.textContent = "Volte ao Discord e tente novamente.";
+        backBtn.style.display = "inline-block";
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(code);
+        title.textContent = "✅ Código copiado!";
+        desc.textContent = "O código foi copiado automaticamente. Volte ao Discord e cole no bot.";
+
+        setTimeout(() => {
+          window.close();
+          backBtn.style.display = "inline-block";
+        }, 1500);
+
+      } catch (err) {
+        title.textContent = "⚠️ Não foi possível copiar automaticamente";
+        desc.textContent = "Copie manualmente o código da URL.";
+        backBtn.style.display = "inline-block";
+      }
+    }
+
+    backBtn.onclick = () => {
+      window.location.href = "https://discord.com/app";
+    };
+
+    copyAndReturn();
   </script>
 </body>
 </html>
