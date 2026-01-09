@@ -46,9 +46,8 @@
   </div>
 
   <script>
-    // Lê parâmetro ?theme=dark ou ?theme=light
     const params = new URLSearchParams(window.location.search);
-    const theme = params.get("theme") || "light"; // padrão light
+    const theme = params.get("theme") || "light";
     document.body.setAttribute("data-theme", theme.toLowerCase());
   </script>
 </body>
